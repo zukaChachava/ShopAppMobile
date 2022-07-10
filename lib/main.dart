@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (ctx) => ProductsProvider(),
+      create: (ctx) => ProductsProvider(),           //create: (ctx) => ProductsProvider(), if we do not use value constructor
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
