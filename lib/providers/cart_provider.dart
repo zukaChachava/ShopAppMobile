@@ -1,11 +1,11 @@
 import 'package:flutter/widgets.dart';
-import 'package:shop_app/models/cart_item.dart';
+import 'package:shop_app/models/cart_item_model.dart';
 import 'package:shop_app/models/product_model.dart';
 
 class CartProvider with ChangeNotifier {
-  Map<String, CartItem> _items;
+  Map<String, CartItemModel> _items;
 
-  Map<String, CartItem> get items {
+  Map<String, CartItemModel> get items {
     return {..._items};
   }
 
@@ -26,7 +26,7 @@ class CartProvider with ChangeNotifier {
     if (_items.containsKey(product.id)) {
       _items.update(
           product.id,
-          (existingOne) => CartItem(
+          (existingOne) => CartItemModel(
               id: existingOne.id,
               title: existingOne.title,
               quantity: existingOne.quantity + 1,
@@ -34,12 +34,33 @@ class CartProvider with ChangeNotifier {
     } else {
       _items.putIfAbsent(
           product.id,
-          () => CartItem(
+          () => CartItemModel(
               id: DateTime.now().toString(),
               title: product.title,
               quantity: 1,
               price: product.price));
     }
+    notifyListeners();
+  }
+
+  void removeItem(String cartId) {
+    String? productId;
+
+    _items.forEach((key, value) {
+      if (value.id == cartId) {
+        productId = key;
+        return;
+      }
+    });
+
+    if (productId != null) {
+      _items.remove(productId);
+      notifyListeners();
+    }
+  }
+
+  void clear() {
+    _items.clear();
     notifyListeners();
   }
 

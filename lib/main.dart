@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:shop_app/providers/cart_provider.dart';
+import 'package:shop_app/providers/orders_provider.dart';
 import 'package:shop_app/providers/products_provider.dart';
 import 'package:shop_app/screens/cart_screen.dart';
+import 'package:shop_app/screens/orders_screen.dart';
 import 'package:shop_app/screens/product_details_screen.dart';
 import 'package:shop_app/screens/products_overview_screen.dart';
 import 'package:provider/provider.dart';
@@ -22,6 +24,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => ProductsProvider()),
         ChangeNotifierProvider(create: (_) => CartProvider()),
+        ChangeNotifierProvider(create: (_) => OrdersProvider()),
       ], //create: (ctx) => ProductsProvider(), if we do not use value constructor
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -44,6 +47,7 @@ class MyApp extends StatelessWidget {
           ProductsOverviewScreen.route: (ctx) => const ProductsOverviewScreen(),
           ProductDetailsScreen.route: (ctx) => const ProductDetailsScreen(),
           CartScreen.route: (ctx) => const CartScreen(),
+          OrdersScreen.route: (ctx) => const OrdersScreen()
         },
       ),
     );
