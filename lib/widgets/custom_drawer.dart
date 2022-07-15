@@ -3,6 +3,7 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shop_app/screens/orders_screen.dart';
+import 'package:shop_app/screens/user_products_screen.dart';
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({Key? key}) : super(key: key);
@@ -25,11 +26,30 @@ class CustomDrawer extends StatelessWidget {
                 child: TextButton(
                   onPressed: () {
                     Navigator.of(context).pushNamed(OrdersScreen.route);
+                    Scaffold.of(context).closeDrawer();
                   },
                   child: const Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Text(
                       'Orders',
+                      style: TextStyle(fontSize: 20, color: Colors.purple),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              width: double.infinity,
+              child: Card(
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pushNamed(UserProductsScreen.route);
+                    Scaffold.of(context).closeDrawer();
+                  },
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text(
+                      'Manage Products',
                       style: TextStyle(fontSize: 20, color: Colors.purple),
                     ),
                   ),

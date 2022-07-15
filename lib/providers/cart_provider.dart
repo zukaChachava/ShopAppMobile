@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:shop_app/models/cart_item_model.dart';
 import 'package:shop_app/models/product_model.dart';
+import 'package:shop_app/screens/product_details_screen.dart';
 
 class CartProvider with ChangeNotifier {
   Map<String, CartItemModel> _items;
@@ -61,6 +62,23 @@ class CartProvider with ChangeNotifier {
 
   void clear() {
     _items.clear();
+    notifyListeners();
+  }
+
+  void removeSingleItem(String productId) {
+    if (!_items.containsKey(productId)) return;
+
+    if (_items[productId]!.quantity > 1) {
+      _items.update(
+          productId,
+          (old) => CartItemModel(
+              id: old.id,
+              title: old.title,
+              quantity: old.quantity - 1,
+              price: old.price));
+    } else {
+      _items.remove(productId);
+    }
     notifyListeners();
   }
 
