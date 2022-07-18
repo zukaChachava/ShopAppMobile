@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:shop_app/models/product_model.dart';
+import 'package:http/http.dart' as http;
 
 class ProductsProvider with ChangeNotifier {
   final List<Product> _products = [
@@ -47,15 +51,29 @@ class ProductsProvider with ChangeNotifier {
     return _products.where((element) => element.isFavourite).toList();
   }
 
-  void addProduct(Product product) {
-    Product newProduct = Product(
-        title: product.title,
-        description: product.description,
-        imageUrl: product.imageUrl,
-        price: product.price,
-        id: DateTime.now().toString());
-    _products.add(newProduct);
-    notifyListeners();
+  Future<void> addProduct(Product product) {
+    const url =
+        'https://flutterapp-6e0db-default-rtdb.europe-west1.firebasedatabase.app/products.json';
+
+    return http
+        .post(Uri.parse(url),
+            body: json.encode({
+              'id': product.id,
+              'title': product.title,
+              'price': product.price.toString(),
+              'imageUrl': product.imageUrl,
+              'description': product.description
+            }))
+        .then((value) {
+      Product newProduct = Product(
+          title: product.title,
+          description: product.description,
+          imageUrl: product.imageUrl,
+          price: product.price,
+          id: DateTime.now().toString());
+      _products.add(newProduct);
+      notifyListeners();
+    });
   }
 
   Product findById(String id) {
