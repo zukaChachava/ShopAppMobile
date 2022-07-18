@@ -43,16 +43,32 @@ class ProductsProvider with ChangeNotifier {
     return [..._products];
   }
 
-  List<Product> get favouriteProducts{
+  List<Product> get favouriteProducts {
     return _products.where((element) => element.isFavourite).toList();
   }
 
   void addProduct(Product product) {
-    _products.add(product);
+    Product newProduct = Product(
+        title: product.title,
+        description: product.description,
+        imageUrl: product.imageUrl,
+        price: product.price,
+        id: DateTime.now().toString());
+    _products.add(newProduct);
     notifyListeners();
   }
 
   Product findById(String id) {
     return _products.firstWhere((element) => element.id == id);
+  }
+
+  void updateProduct(String id, Product newProduct) {
+    _products[_products.indexWhere((element) => element.id == id)] = newProduct;
+    notifyListeners();
+  }
+
+  void delete(String id) {
+    _products.removeWhere((element) => element.id == id);
+    notifyListeners();
   }
 }
