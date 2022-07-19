@@ -5,8 +5,6 @@ import 'package:shop_app/providers/products_provider.dart';
 import 'package:shop_app/screens/cart_screen.dart';
 import 'package:shop_app/widgets/badge.dart';
 import 'package:shop_app/widgets/custom_drawer.dart';
-import 'package:shop_app/widgets/product_item.dart';
-import '../models/product_model.dart';
 import '../widgets/products_grid.dart';
 
 enum FilterOptions { favourites, all }
@@ -22,6 +20,28 @@ class ProductsOverviewScreen extends StatefulWidget {
 
 class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
   bool _showOnlyFavourites = false;
+  bool _isLoading = false;
+
+  @override
+  void initState() {
+    _loadData();
+    super.initState();
+  }
+
+  Future<void> _loadData() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      await Provider.of<ProductsProvider>(context, listen: false)
+          .fetchAndSetProducts();
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +89,9 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
         ],
       ),
       drawer: const CustomDrawer(),
-      body: ProductsGrid(showOnlyFavourites: _showOnlyFavourites),
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : ProductsGrid(showOnlyFavourites: _showOnlyFavourites),
     );
   }
 }

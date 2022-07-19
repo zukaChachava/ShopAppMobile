@@ -27,16 +27,22 @@ class UserProductsScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: Container(
-        padding: const EdgeInsets.all(8),
-        child: ListView.separated(
-          itemCount: productsProvider.products.length,
-          itemBuilder: (ctx, index) {
-            return UserProductItem(product: productsProvider.products[index]);
-          },
-          separatorBuilder: (ctx, index) {
-            return const Divider();
-          },
+      body: RefreshIndicator(
+        onRefresh: () async {
+          await Provider.of<ProductsProvider>(context, listen: false)
+              .fetchAndSetProducts();
+        },
+        child: Container(
+          padding: const EdgeInsets.all(8),
+          child: ListView.separated(
+            itemCount: productsProvider.products.length,
+            itemBuilder: (ctx, index) {
+              return UserProductItem(product: productsProvider.products[index]);
+            },
+            separatorBuilder: (ctx, index) {
+              return const Divider();
+            },
+          ),
         ),
       ),
     );

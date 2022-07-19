@@ -27,7 +27,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
     super.dispose();
   }
 
-  void _saveForm() {
+  Future<void> _saveForm() async {
     final provider = Provider.of<ProductsProvider>(context, listen: false);
     final isValid = _form.currentState?.validate();
     if (isValid == null || !isValid) return;
@@ -38,19 +38,18 @@ class _EditProductScreenState extends State<EditProductScreen> {
     });
 
     if (_editedProduct.id != '') {
-      provider.updateProduct(_editedProduct.id, _editedProduct);
+      await provider.updateProduct(_editedProduct.id, _editedProduct);
       setState(() {
         _isLoading = false;
       });
-      Navigator.of(context).pop();
     } else {
-      provider.addProduct(_editedProduct).then((_) {
-        setState(() {
-          _isLoading = false;
-        });
-        Navigator.of(context).pop();
+      await provider.addProduct(_editedProduct);
+      setState(() {
+        _isLoading = false;
       });
     }
+    if (!mounted) return;
+    Navigator.of(context).pop();
   }
 
   void _loadProduct(BuildContext context) {
@@ -180,8 +179,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
                               controller: _imageUrlController,
                               onFieldSubmitted: (_) => _saveForm(),
                               validator: (value) {
-                                if (value == null || value == '')
+                                if (value == null || value == '') {
                                   return 'Fill this';
+                                }
                                 return null;
                               },
                               onSaved: (value) {
