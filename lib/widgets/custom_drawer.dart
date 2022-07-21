@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
+import 'package:shop_app/providers/auth_provider.dart';
 import 'package:shop_app/screens/orders_screen.dart';
 import 'package:shop_app/screens/user_products_screen.dart';
 
@@ -45,6 +47,23 @@ class CustomDrawer extends StatelessWidget {
                   onPressed: () {
                     Navigator.of(context).pushNamed(UserProductsScreen.route);
                     Scaffold.of(context).closeDrawer();
+                  },
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text(
+                      'Manage Products',
+                      style: TextStyle(fontSize: 20, color: Colors.purple),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              width: double.infinity,
+              child: Card(
+                child: TextButton(
+                  onPressed: () {
+                    Provider.of<AuthProvider>(context, listen: false).logout();
                   },
                   child: const Padding(
                     padding: EdgeInsets.all(8.0),

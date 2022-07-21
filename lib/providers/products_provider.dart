@@ -1,19 +1,21 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:shop_app/http/clients/firebase_client.dart';
 import 'package:shop_app/models/product_model.dart';
 import 'package:http/http.dart' as http;
 
 class ProductsProvider with ChangeNotifier {
   final List<Product> _products = [];
+  final FirebaseClient _client;
 
-  ProductsProvider();
+  ProductsProvider() : _client = FirebaseClient();
 
   Future<void> fetchAndSetProducts() async {
     const url =
         'https://flutterapp-6e0db-default-rtdb.europe-west1.firebasedatabase.app/products.json';
 
-    var response = json.decode((await http.get(Uri.parse(url))).body);
+    var response = json.decode((await _client.client.get(Uri.parse(url))).body);
 
     if (response == null) return;
 
@@ -46,7 +48,7 @@ class ProductsProvider with ChangeNotifier {
     const url =
         'https://flutterapp-6e0db-default-rtdb.europe-west1.firebasedatabase.app/products.json';
 
-    await http.post(Uri.parse(url),
+    await _client.client.post(Uri.parse(url),
         body: json.encode({
           'id': product.id,
           'title': product.title,
@@ -77,7 +79,7 @@ class ProductsProvider with ChangeNotifier {
     final url =
         'https://flutterapp-6e0db-default-rtdb.europe-west1.firebasedatabase.app/products/${products[index].id}.json';
 
-    await http.patch(Uri.parse(url),
+    await _client.client.patch(Uri.parse(url),
         body: json.encode({
           'title': newProduct.title,
           'description': newProduct.description,
@@ -96,7 +98,7 @@ class ProductsProvider with ChangeNotifier {
     final url =
         'https://flutterapp-6e0db-default-rtdb.europe-west1.firebasedatabase.app/products/${products[index].id}.json';
 
-    await http.delete(Uri.parse(url));
+    await _client.client.delete(Uri.parse(url));
     _products.removeAt(index);
     notifyListeners();
   }
