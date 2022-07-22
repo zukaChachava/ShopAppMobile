@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shop_app/helpers/custom_route.dart';
 import 'package:shop_app/providers/auth_provider.dart';
 import 'package:shop_app/providers/cart_provider.dart';
 import 'package:shop_app/providers/orders_provider.dart';
@@ -39,19 +40,23 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'Flutter Demo',
           theme: ThemeData(
+              pageTransitionsTheme: PageTransitionsTheme(builders: {
+                TargetPlatform.android: CustomPageTransitionBuilder(),
+                TargetPlatform.iOS: CustomPageTransitionBuilder()
+              }),
               colorScheme: const ColorScheme(
-            primary: Colors.purple,
-            onPrimary: Colors.white,
-            secondary: Colors.orange,
-            onSecondary: Colors.white,
-            error: Colors.red,
-            onError: Colors.white,
-            surface: Colors.black,
-            onSurface: Colors.white,
-            background: Colors.black,
-            onBackground: Colors.white,
-            brightness: Brightness.light,
-          )),
+                primary: Colors.purple,
+                onPrimary: Colors.white,
+                secondary: Colors.orange,
+                onSecondary: Colors.white,
+                error: Colors.red,
+                onError: Colors.white,
+                surface: Colors.black,
+                onSurface: Colors.white,
+                background: Colors.black,
+                onBackground: Colors.white,
+                brightness: Brightness.light,
+              )),
           home:
               auth.isAuth ? const ProductsOverviewScreen() : const AuthScreen(),
           routes: {

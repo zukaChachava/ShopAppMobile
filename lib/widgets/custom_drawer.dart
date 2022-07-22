@@ -68,7 +68,7 @@ class CustomDrawer extends StatelessWidget {
                   child: const Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Text(
-                      'Manage Products',
+                      'Exit',
                       style: TextStyle(fontSize: 20, color: Colors.purple),
                     ),
                   ),

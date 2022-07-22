@@ -15,42 +15,51 @@ class ProductDetailsScreen extends StatelessWidget {
         Provider.of<ProductsProvider>(context, listen: false).findById(id);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(product.title),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 300,
-              width: double.infinity,
+        body: CustomScrollView(
+      slivers: [
+        SliverAppBar(
+          expandedHeight: 300,
+          pinned: true,
+          flexibleSpace: FlexibleSpaceBar(
+            title: Text(product.title),
+            background: Hero(
+              tag: product.id,
               child: Image.network(
                 product.imageUrl,
                 fit: BoxFit.cover,
               ),
             ),
-            const SizedBox(
-              height: 10,
-            ),
-            Text(
-              '\$${product.price}',
-              style: const TextStyle(color: Colors.grey, fontSize: 20),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Text(
-              product.description,
-              softWrap: true,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: Colors.black,
-                fontSize: 20,
-              ),
-            ),
-          ],
+          ),
         ),
-      ),
-    );
+        SliverList(
+          delegate: SliverChildListDelegate(
+            [
+              const SizedBox(
+                height: 10,
+              ),
+              Text(
+                '\$${product.price}',
+                style: const TextStyle(color: Colors.grey, fontSize: 20),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Text(
+                product.description,
+                softWrap: true,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 20,
+                ),
+              ),
+              const SizedBox(
+                height: 800,
+              )
+            ],
+          ),
+        ),
+      ],
+    ));
   }
 }
